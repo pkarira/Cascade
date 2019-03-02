@@ -66,8 +66,8 @@ def clear_files(folder):
 
 def select_image():
 	result_update.delete(0, 'end')
-	clear_files('/home/pulkit/Desktop/btp_software/data/micrographs_new')
-	clear_files('/home/pulkit/Desktop/btp_software/data/crops_new')
+	clear_files('/home/pulkit/Desktop/cascade/data/micrographs_new')
+	clear_files('/home/pulkit/Desktop/cascade/data/crops_new')
 	fname = filedialog.askopenfilename(filetypes=(("All files", "*.*"),("Template files", "*.tplate"),("HTML files", "*.html;*.htm")))
 	if fname:
 		try:
@@ -93,7 +93,7 @@ def final_result():
 def get_result():
 	manager.busy()
 	result_update.insert(0,"Processing...")
-	final_result()
+	root.after(1000,final_result)
 
 root = Tkinter.Tk()
 root.geometry('500x300')
@@ -113,7 +113,7 @@ image = ImageTk.PhotoImage(image)
 
 panel = Label(frame, image = image)
 panel.pack(anchor=NW,padx=20,pady=10); 
-select_image_button=Button(frame, text ="Select Microstructure",bg="white",command = select_image)
+select_image_button=Button(frame, text ="Upload Microstructure",bg="white",command = select_image)
 select_image_button.pack(anchor=SW,padx=40,pady=10)
 result_update = Entry(leftframe, bd =5)
 result_update.pack(anchor=SE,padx=70,pady=10)
