@@ -1,1 +1,4 @@
 *.pyc
+data/cropped_new/features_new/
+data/crops_new/
+data/micrographs_new/
