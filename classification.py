@@ -33,7 +33,7 @@ def classifier():
     Xtest = features
     #     Xtest = X / np.linalg.norm(X, axis=1)[:,np.newaxis]
 
-    filename = 'xgboost_model_2.sav'
+    filename = 'xgboost_model_4.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
     result = loaded_model.predict(Xtest)
     return (max_vote(result))
