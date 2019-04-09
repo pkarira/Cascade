@@ -21,6 +21,36 @@ def quad_crop(image, w=224):
             crops.append((labels[idx,idy], crop))
 
     return crops
+def side_center_crop(image,w=224):
+    labels = np.array([['UL', 'UR'], ['LL', 'LR']])
+    size = np.array(image.shape).astype(int)
+    x, y = size
+    crops = []
+    crop = image[0:w,0:w]
+    crops.append(('UL', crop))
+    crop = image[x-w:,0:w]
+    crops.append(('UR',crop))
+    crop  = image[0:w,y-w:]
+    crops.append(('LL',crop))
+    crop = image[x-w:,y-w:]
+    crops.append(('LR',crop))
+    center = (np.array(image.shape) / 2).astype(int)
+    x, y = center
+    crop = image[x-w/2:x+w/2,y-w/2:y+w/2]
+    crops.append(('CC', crop))
+    return crops
+
+def single_crop(image, w=224):
+    center = (np.array(image.shape) / 2).astype(int)
+    x, y = center
+    crops = []
+    print x-w/2
+    print x+w/2
+    print y-w/2
+    print y+w/2
+    crop = image[x-w/2:x+w/2,y-w/2:y+w/2]
+    crops.append(('CC', crop))
+    return crops
 
 def cropper():
     paths = glob.glob('data/micrographs_new/*')
@@ -28,7 +58,11 @@ def cropper():
     for path in paths:
     #     print('cropping {}'.format(path))
         prefix, ext = os.path.splitext(os.path.basename(path))
-        crops = quad_crop(imread(path, as_grey=True))
+        image = imread(path, as_grey=True)
+        if image.shape[0]<448 or image.shape[1]<448:
+            crops = side_center_crop(image)
+        else:
+            crops = quad_crop(image)
         for label, crop in crops:
             dest = '{}-crop{}.tif'.format(prefix, label)
             dest = os.path.join('data/crops_new', dest)
